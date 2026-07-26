@@ -18,35 +18,75 @@ header {
 }
 
 .blog {
+    width: min(720px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 32px 0 48px;
+}
+
+.blog-header {
+    margin: 0 0 24px;
     text-align: center;
-    font-size: 20px;
+}
+
+.blog-header h1 {
+    margin: 16px 0 8px;
+}
+
+.blog-header p {
+    margin: 0;
+    color: #eadada;
+}
+
+.blog-header a {
+    display: inline-block;
+    color: #ffffff;
+    padding: 0;
 }
 
 .camp_user {
-    background-color: #ef0000;
-    font-size: 20px;
-    text-align: center;
-    padding: 100px;
-    border-radius: 20px;
+    display: grid;
+    gap: 8px;
+    padding: 24px;
+    border-radius: 12px;
+    background-color: #7d3030;
+    box-shadow: 0 4px 16px rgb(0 0 0 / 18%);
 }
 
-input[type="text"] {
+.camp_user label {
+    font-weight: 600;
+}
+
+.camp_user input,
+.camp_user textarea {
     width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
     box-sizing: border-box;
+    padding: 12px;
     border: 2px solid #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
+    font: inherit;
 }
 
-button {
-    background-color: #4CAF50;
+.camp_user input:focus,
+.camp_user textarea:focus {
+    border-color: #f2b8b8;
+    outline: 2px solid transparent;
+}
+
+.camp_user button {
+    justify-self: start;
+    background-color: #3f733f;
     color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
+    padding: 12px 18px;
+    margin-top: 8px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+}
+
+.camp_user button:hover {
+    background-color: #345f34;
 }
 div {
     display: flex;
@@ -66,4 +106,63 @@ a {
     padding: 10px 20px;
     text-decoration: none;
     border-radius: 4px;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.mensagens-section {
+    margin-top: 32px;
+}
+
+.mensagens-section h2 {
+    margin-bottom: 8px;
+}
+
+#mensagens {
+    display: grid;
+    gap: 12px;
+    width: 100%;
+    margin-top: 16px;
+    background: transparent;
+}
+
+.mensagem {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px;
+    border-radius: 10px;
+    background: #762d2d;
+    text-align: left;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+}
+
+.mensagem p {
+    margin: 8px 0 12px;
+    overflow-wrap: anywhere;
+}
+
+.mensagem time {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.erro {
+    color: #ffd0d0;
+}
+
+@media (max-width: 520px) {
+    .blog {
+        padding-top: 20px;
+    }
+
+    .camp_user {
+        padding: 18px;
+    }
+
+    .camp_user button {
+        width: 100%;
+    }
 }

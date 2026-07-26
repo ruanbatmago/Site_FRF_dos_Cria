@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Literal
 
 from pydantic import BaseModel, Field, HttpUrl
@@ -64,3 +65,21 @@ class ObjetoResposta(BaseModel):
     categoria: CategoriaObjeto
     imagem_url: HttpUrl
     curtidas: int
+
+
+class MensagemCriacao(BaseModel):
+    autor: str = Field(min_length=2, max_length=50)
+    conteudo: str = Field(min_length=1, max_length=1000)
+
+
+class MensagemAtualizacao(BaseModel):
+    autor: str | None = Field(default=None, min_length=2, max_length=50)
+    conteudo: str | None = Field(default=None, min_length=1, max_length=1000)
+
+
+class MensagemResposta(BaseModel):
+    id: int
+    autor: str
+    conteudo: str
+    criado_em: datetime
+    atualizado_em: datetime
