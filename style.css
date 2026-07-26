@@ -1,0 +1,15 @@
+body {
+    background-color: #bd0606;
+}
+
+header {
+    background-color: #bd0606;
+    margin-left: 5px;
+    font-size: 20px;
+}
+
+.linha {
+    background-color: #000000;
+    font-size: 1px;
+    width: 200%;
+}
