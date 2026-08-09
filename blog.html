@@ -3,32 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog | Versalhes</title>
+    <title>Diário | Versalhes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <main class="blog">
-        <header class="blog-header">
-            <a href="index.html">← Voltar</a>
-            <h1>Blog Versalhes</h1>
-            <p>Deixe uma mensagem e veja o que outras pessoas publicaram.</p>
-        </header>
+    <header class="site-header">
+        <a class="brand" href="index.html" aria-label="Versalhes, página inicial">VERSALHES<span>.</span></a>
+        <nav aria-label="Navegação principal">
+            <a href="index.html">Início</a>
+            <a href="imagens.html">Catalogo</a>
+            <a class="active" href="blog.html">blog</a>
+        </nav>
+    </header>
 
-        <form class="camp_user" id="mensagem-form">
-            <label for="autor">Nome</label>
-            <input id="autor" name="autor" type="text" minlength="2" maxlength="50" placeholder="Seu nome" required>
-
-            <label for="conteudo">Mensagem</label>
-            <textarea id="conteudo" name="conteudo" minlength="1" maxlength="1000" placeholder="Escreva sua mensagem" required></textarea>
-            <button type="submit">Enviar mensagem</button>
-        </form>
-
-        <section class="mensagens-section">
-            <h2>Mensagens</h2>
-            <p id="blog-status" role="status"></p>
-            <div id="mensagens"></div>
+    <main class="journal-page">
+        <section class="page-heading journal-heading">
+            <p class="eyebrow">Diário aberto</p>
+            <h1>fala ai<br><em>amiguinho.</em></h1>
+            <p>O que você acha?</p>
         </section>
+
+        <div class="journal-layout">
+            <section class="message-form-wrap" aria-labelledby="form-title">
+                <p class="section-label">fala aí</p>
+                <h2 id="form-title">fala oque voce acha amiguinho.</h2>
+                <form id="message-form">
+                    <label for="name">Seu nome</label>
+                    <input id="name" name="name" type="text" autocomplete="name" placeholder="Como podemos chamar você?" required>
+                    <label for="message">Sua mensagem</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Escreva aqui..." required></textarea>
+                    <button type="submit">Publicar mensagem <span aria-hidden="true">↗</span></button>
+                    <p class="form-status" id="form-status" aria-live="polite"></p>
+                </form>
+            </section>
+
+            <section class="message-list-wrap" aria-labelledby="messages-title">
+                <div class="message-list-heading">
+                    <p class="section-label" id="messages-title">Últimas mensagens</p>
+                    <span id="message-count">00</span>
+                </div>
+                <div id="message-list" class="message-list">
+                    <p class="empty-messages" id="empty-messages">As mensagens vão aparecer aqui.</p>
+                </div>
+            </section>
+        </div>
     </main>
+
+    <footer class="site-footer">
+        <a class="brand" href="index.html">VERSALHES<span>.</span></a>
+        <p>moda casual de luxo.</p>
+        <p>© 2026</p>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>

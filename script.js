@@ -1,77 +1,71 @@
-const API_URL = "/api";
+const messageForm = document.querySelector('#message-form');
 
-const form = document.querySelector("#mensagem-form");
-const lista = document.querySelector("#mensagens");
-const statusBlog = document.querySelector("#blog-status");
+if (messageForm) {
+    const messageList = document.querySelector('#message-list');
+    const messageCount = document.querySelector('#message-count');
+    const emptyMessages = document.querySelector('#empty-messages');
+    const status = document.querySelector('#form-status');
+    const storageKey = 'versalhes-messages';
 
-function definirStatus(texto, erro = false) {
-    if (!statusBlog) return;
-    statusBlog.textContent = texto;
-    statusBlog.classList.toggle("erro", erro);
-}
+    const createMessageCard = ({ name, message, date }) => {
+        const card = document.createElement('article');
+        const text = document.createElement('p');
+        const footer = document.createElement('footer');
+        const author = document.createElement('span');
+        const time = document.createElement('time');
 
-function criarMensagemElemento(mensagem) {
-    const artigo = document.createElement("article");
-    artigo.className = "mensagem";
-
-    const autor = document.createElement("strong");
-    autor.textContent = mensagem.autor;
-
-    const conteudo = document.createElement("p");
-    conteudo.textContent = mensagem.conteudo;
-
-    const data = document.createElement("time");
-    data.dateTime = mensagem.criado_em;
-    data.textContent = new Date(mensagem.criado_em).toLocaleString("pt-BR");
-
-    artigo.append(autor, conteudo, data);
-    return artigo;
-}
-
-async function carregarMensagens() {
-    if (!lista) return;
-    definirStatus("Carregando mensagens...");
-
-    try {
-        const resposta = await fetch(`${API_URL}/mensagens`);
-        if (!resposta.ok) throw new Error("Não foi possível carregar as mensagens.");
-
-        const mensagens = await resposta.json();
-        lista.replaceChildren(...mensagens.map(criarMensagemElemento));
-        definirStatus(mensagens.length ? "" : "Ainda não há mensagens.");
-    } catch (erro) {
-        definirStatus(`${erro.message} Verifique se o backend está em execução.`, true);
-    }
-}
-
-async function enviarMensagem(evento) {
-    evento.preventDefault();
-    const dados = new FormData(form);
-    definirStatus("Enviando...");
-
-    try {
-        const resposta = await fetch(`${API_URL}/mensagens`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                autor: dados.get("autor").trim(),
-                conteudo: dados.get("conteudo").trim(),
-            }),
+        card.className = 'message-card';
+        text.textContent = `"${message}"`;
+        author.textContent = name;
+        time.dateTime = date;
+        time.textContent = new Date(`${date}T12:00:00`).toLocaleDateString('pt-BR', {
+            day: '2-digit', month: '2-digit', year: '2-digit'
         });
+        footer.append(author, time);
+        card.append(text, footer);
+        return card;
+    };
 
-        if (!resposta.ok) {
-            const detalhe = await resposta.json();
-            throw new Error(detalhe.detail?.[0]?.msg || "Não foi possível enviar.");
+    const savedMessages = () => {
+        try {
+            const messages = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            return Array.isArray(messages) ? messages : [];
+        } catch {
+            return [];
         }
+    };
 
-        form.reset();
-        await carregarMensagens();
-    } catch (erro) {
-        definirStatus(erro.message, true);
-    }
-}
+    const updateMessageState = () => {
+        const totalMessages = messageList.querySelectorAll('.message-card').length;
+        messageCount.textContent = String(totalMessages).padStart(2, '0');
+        emptyMessages.hidden = totalMessages > 0;
+    };
 
-if (form) {
-    form.addEventListener("submit", enviarMensagem);
-    carregarMensagens();
+    const renderMessages = () => {
+        savedMessages().forEach((entry) => messageList.append(createMessageCard(entry)));
+        updateMessageState();
+    };
+
+    renderMessages();
+
+    messageForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(messageForm);
+        const entry = {
+            name: formData.get('name').trim(),
+            message: formData.get('message').trim(),
+            date: new Date().toISOString().slice(0, 10)
+        };
+
+        if (!entry.name || !entry.message) return;
+
+        const messages = savedMessages();
+        messages.unshift(entry);
+        localStorage.setItem(storageKey, JSON.stringify(messages));
+        messageList.prepend(createMessageCard(entry));
+        updateMessageState();
+        status.textContent = 'Sua mensagem foi publicada.';
+        messageForm.reset();
+    });
 }
